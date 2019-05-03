@@ -4,34 +4,42 @@ function deepCopy(data) {
 
 function ActiveFriendsList(props) {
   return (
-    <ul>
-      {" "}
-      {props.list.map(item => (
-        <li key={item}>
-          <span> {item} </span>{" "}
-          <button onClick={() => props.onRemoveFriend(item)}> Remove </button>{" "}
-          <button onClick={() => props.onDeactivateFriend(item)}>
-            {" "}
-            Deactivate{" "}
-          </button>{" "}
-        </li>
-      ))}{" "}
-    </ul>
+    <React.Fragment>
+      <h1>Active Friends</h1>
+      <ul>
+        {" "}
+        {props.list.map(item => (
+          <li key={item}>
+            <span> {item} </span>{" "}
+            <button onClick={() => props.onRemoveFriend(item)}> Remove </button>{" "}
+            <button onClick={() => props.onDeactivateFriend(item)}>
+              {" "}
+              Deactivate{" "}
+            </button>{" "}
+          </li>
+        ))}{" "}
+      </ul>
+    </React.Fragment>
   );
 }
 
 function InactiveFriendsList(props) {
   return (
-    <ul>
-      {" "}
-      {props.list.map(item => (
-        <li key={item}>
-          <span> {item} </span>{" "}
-          <button onClick={() => props.onRemoveFriend(item)}> Remove </button>{" "}
-          <button onClick={props.onDeactivateFriend(item)}> Deactivate </button>{" "}
-        </li>
-      ))}{" "}
-    </ul>
+    <React.Fragment>
+      <h1>Inactive Friends</h1>
+      <ul>
+        {" "}
+        {props.list.map(item => (
+          <li key={item}>
+            <span> {item} </span>{" "}
+            <button onClick={() => props.onRemoveFriend(item)}> Remove </button>{" "}
+            <button onClick={() => props.onDeactivateFriend(item)}>
+              Deactivate
+            </button>{" "}
+          </li>
+        ))}{" "}
+      </ul>
+    </React.Fragment>
   );
 }
 
@@ -80,15 +88,13 @@ class App extends React.Component {
   }
   render() {
     return (
-      <div>
+      <React.Fragment>
         <input
           type="text"
           placeholder="New Friend"
           value={this.state.input}
           onChange={this.updateInput}
-        >
-          {" "}
-        </input>{" "}
+        />{" "}
         <button onClick={this.addFriend}> Submit </button>{" "}
         <ActiveFriendsList
           list={this.state.activeFriends}
@@ -98,7 +104,7 @@ class App extends React.Component {
           list={this.state.inactiveFriends}
           onDeactivateFriend={this.deactivateFriend}
         />{" "}
-      </div>
+      </React.Fragment>
     );
   }
 }
