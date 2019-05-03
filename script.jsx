@@ -4,44 +4,34 @@ function deepCopy(data) {
 
 function ActiveFriendsList(props) {
   return (
-    <div>
+    <ul>
       {" "}
-      <h3> Active Friends </h3>{" "}
-      <ul>
-        {" "}
-        {props.list.map(item => (
-          <li key={item}>
-            <span> {item} </span>{" "}
-            <button onClick={() => props.onRemoveFriend(item)}> Remove </button>{" "}
-            <button onClick={() => props.onDeactivateFriend(item)}>
-              {" "}
-              Deactivate{" "}
-            </button>{" "}
-          </li>
-        ))}{" "}
-      </ul>
-    </div>
+      {props.list.map(item => (
+        <li key={item}>
+          <span> {item} </span>{" "}
+          <button onClick={() => props.onRemoveFriend(item)}> Remove </button>{" "}
+          <button onClick={() => props.onDeactivateFriend(item)}>
+            {" "}
+            Deactivate{" "}
+          </button>{" "}
+        </li>
+      ))}{" "}
+    </ul>
   );
 }
 
 function InactiveFriendsList(props) {
   return (
-    <div>
-      <h3> Active Friends </h3>{" "}
-      <ul>
-        {" "}
-        {props.list.map(item => (
-          <li key={item}>
-            <span> {item} </span>{" "}
-            <button onClick={() => props.onRemoveFriend(item)}> Remove </button>{" "}
-            <button onClick={props.onDeactivateFriend(item)}>
-              {" "}
-              Deactivate{" "}
-            </button>{" "}
-          </li>
-        ))}{" "}
-      </ul>
-    </div>
+    <ul>
+      {" "}
+      {props.list.map(item => (
+        <li key={item}>
+          <span> {item} </span>{" "}
+          <button onClick={() => props.onRemoveFriend(item)}> Remove </button>{" "}
+          <button onClick={props.onDeactivateFriend(item)}> Deactivate </button>{" "}
+        </li>
+      ))}{" "}
+    </ul>
   );
 }
 
