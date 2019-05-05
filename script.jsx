@@ -1,7 +1,3 @@
-function deepCopy(data) {
-  return JSON.parse(JSON.stringify(data));
-}
-
 function ActiveFriendsList(props) {
   return (
     <React.Fragment>
@@ -33,9 +29,10 @@ function InactiveFriendsList(props) {
           <li key={item}>
             <span> {item} </span>{" "}
             <button onClick={() => props.onRemoveFriend(item)}> Remove </button>{" "}
-            <button onClick={() => props.onDeactivateFriend(item)}>
-              Deactivate
-            </button>{" "}
+            <button onClick={() => props.onActivateFriend(item)}>
+              {" "}
+              Activate{" "}
+            </button>
           </li>
         ))}{" "}
       </ul>
@@ -48,18 +45,20 @@ class App extends React.Component {
     super(props);
     this.state = {
       activeFriends: ["Abid", "Adil", "Asim"],
-      inactiveFriends: [],
+      inactiveFriends: ["Shiraz"],
       input: ""
     };
+    this.clearAll = this.clearAll.bind(this);
     this.addFriend = this.addFriend.bind(this);
     this.removeFriend = this.removeFriend.bind(this);
     this.updateInput = this.updateInput.bind(this);
     this.deactivateFriend = this.deactivateFriend.bind(this);
+    this.activateFriend = this.activateFriend.bind(this);
   }
   addFriend() {
     this.setState(currentState => {
       return {
-        activeFriends: currentState.friends.concat([this.state.input]),
+        activeFriends: currentState.activeFriends.concat([this.state.input]),
         input: ""
       };
     });
@@ -67,23 +66,46 @@ class App extends React.Component {
   removeFriend(name) {
     this.setState(currentState => {
       return {
-        activeFriends: currentState.friends.filter(friend => friend !== name)
+        activeFriends: currentState.activeFriends.filter(
+          friend => friend !== name
+        ),
+        inactiveFriends: currentState.inactiveFriends.filter(
+          friend => friend !== name
+        )
       };
     });
   }
   deactivateFriend(name) {
-    let newState = {
-      activeFriends: deepCopy(this.state.activeFriends),
-      inactiveFriends: deepCopy(this.state.inactiveFriends)
-    };
-    newState.activeFriends.filter(friend => friend !== name);
-    newState.inactiveFriends.push(name);
-    this.setState(newState);
+    this.setState(currentState => {
+      return {
+        activeFriends: currentState.activeFriends.filter(
+          friend => friend !== name
+        ),
+        inactiveFriends: currentState.inactiveFriends.concat([name])
+      };
+    });
+  }
+  activateFriend(name) {
+    this.setState(currentState => {
+      return {
+        activeFriends: currentState.activeFriends.concat([name]),
+        inactiveFriends: currentState.inactiveFriends.filter(
+          friend => friend !== name
+        )
+      };
+    });
   }
   updateInput(event) {
     const VALUE = event.target.value;
     this.setState({
       input: VALUE
+    });
+  }
+  clearAll() {
+    this.setState({
+      activeFriends: [],
+      inactiveFriends: [],
+      input: ""
     });
   }
   render() {
@@ -95,14 +117,17 @@ class App extends React.Component {
           value={this.state.input}
           onChange={this.updateInput}
         />{" "}
-        <button onClick={this.addFriend}> Submit </button>{" "}
+        <button onClick={this.addFriend}> Submit </button> <br />
+        <button onClick={this.clearAll}> Clear All </button>
         <ActiveFriendsList
           list={this.state.activeFriends}
           onRemoveFriend={this.removeFriend}
+          onDeactivateFriend={this.deactivateFriend}
         />{" "}
         <InactiveFriendsList
           list={this.state.inactiveFriends}
-          onDeactivateFriend={this.deactivateFriend}
+          onRemoveFriend={this.removeFriend}
+          onActivateFriend={this.activateFriend}
         />{" "}
       </React.Fragment>
     );
